@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>3D File Volume Calculator</title>
+</head>
+
+<body>
+    <h1>Upload 3D File (STL/STEP)</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="file" accept=".stl,.step" required>
+        <button type="submit">Upload</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById("file");
+
+            if (!fileInput.files.length) {
+                alert("Please select a file to upload!");
+                return;
+            }
+
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch('http://localhost:3000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                } else {
+                    document.getElementById('result').innerHTML = `
+                        <p>Filename: ${data.filename}</p>
+                        <p>Volume: ${data.volume.toFixed(2)} mm^3</p>
+                        <p>Surface Area: ${data.surfaceArea.toFixed(2)} mm^2</p>
+                        <p>Mesh Density: ${data.meshDensity} faces</p>
+                    `;
+                }
+            } catch (err) {
+                document.getElementById('result').innerHTML = '<p style="color: red;">Error uploading file</p>';
+            }
+        });
+    </script>
+</body>
+
+</html>
