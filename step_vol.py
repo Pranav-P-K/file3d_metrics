@@ -1,4 +1,3 @@
-'''
 import sys
 import os
 import FreeCAD
@@ -40,10 +39,9 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"ERROR: {str(e)}", file=sys.stderr)
         sys.exit(1)
+
+
 '''
-
-# step_volume_metrics.py
-
 import sys
 import os
 import cadquery as cq
@@ -94,3 +92,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"ERROR: {str(e)}", file=sys.stderr)
         sys.exit(1)
+'''
