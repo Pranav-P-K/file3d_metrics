@@ -1,17 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
     <title>3D File Volume Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        p {
+            margin: 8px 0;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Upload 3D File (STL/STEP)</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="file" accept=".stl,.step" required>
-        <button type="submit">Upload</button>
-    </form>
-    <div id="result"></div>
+    <div class="container">
+        <h1>Upload 3D File (.stl / .step)</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="file" accept=".stl,.step" required>
+            <button type="submit">Upload</button>
+        </form>
+        <div id="result"></div>
+    </div>
 
     <script>
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
@@ -35,17 +101,19 @@
                 const data = await response.json();
 
                 if (data.error) {
-                    document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                    document.getElementById('result').innerHTML =
+                        `<p class="error">Error: ${data.error}</p>`;
                 } else {
                     document.getElementById('result').innerHTML = `
-                        <p>Filename: ${data.filename}</p>
-                        <p>Volume: ${data.volume.toFixed(2)} mm^3</p>
-                        <p>Surface Area: ${data.surfaceArea.toFixed(2)} mm^2</p>
-                        <p>Mesh Density: ${data.meshDensity} faces</p>
+                        <p><strong>Filename:</strong> ${data.filename}</p>
+                        <p><strong>Volume:</strong> ${data.volume.toFixed(2)} mm³</p>
+                        <p><strong>Surface Area:</strong> ${data.surfaceArea.toFixed(2)} mm²</p>
+                        <p><strong>Mesh Density:</strong> ${data.meshDensity} faces</p>
                     `;
                 }
             } catch (err) {
-                document.getElementById('result').innerHTML = '<p style="color: red;">Error uploading file</p>';
+                document.getElementById('result').innerHTML =
+                    '<p class="error">Error uploading file</p>';
             }
         });
     </script>
